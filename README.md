@@ -28,6 +28,8 @@ OK, now let's get started...
 
 ### Obtaining a list of GCP nodes
 
+*Note: you can skip the rest of this section and go to [The Recipes -- Where the Magic Happens](#the-recipes----where-the-magic-happens) if you have a current list of nodes.*
+
 A critical file the list of servers, clients, and output party.  Ansible will need this.
 
 Using the Google Cloud Console (hereafter, "the Console"), you can generate this via:
@@ -40,7 +42,7 @@ You can get to the console via the GCP web interface.
 
 ### Annotating that list
 
-You'll next need to annotate that list a little bit, dividing it into sections.  For the ansible scripts here, the sections **must** bbe called `output`, `server`, and `client`.  An example file is included below:
+You'll next need to annotate that list a little bit, dividing it into sections.  For the ansible scripts here, the sections **must** be called `output`, `server`, and `client`.  An example file is included below:
 
 ```
 [output]
