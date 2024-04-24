@@ -17,8 +17,18 @@
       vars:
         ansible_ssh_common_args: '-o StrictHostKeyChecking=no -A'
 
+    - name: Run 'go mod tidy' for smc-in-a-box
+      command: /usr/local/go/bin/go mod tidy
+      args:
+        chdir: "{{ ansible_env.HOME }}/smc-in-a-box"
+
     - name: Compile Go program
       command: /usr/local/go/bin/go build
       args:
-        chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
-
+        chdir: "{{ item }}"
+      loop:
+        - "{{ ansible_env.HOME }}/smc-in-a-box/client/cmd"
+        - "{{ ansible_env.HOME }}/smc-in-a-box/server/cmd"
+        - "{{ ansible_env.HOME }}/smc-in-a-box/outputparty/cmd"
+        - "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
+        

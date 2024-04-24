@@ -1,0 +1,26 @@
+---
+- name: start smc
+  hosts: all
+  gather_facts: false
+  vars:
+    - exp_name: "{{ exp_name }}"
+
+- name: kick off tcpdump
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: start tcpdump on all hosts
+      become: yes
+      command: /usr/bin/tcpdump -s 100 -w /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap
+      async: 900 # in seconds
+      poll: 0 # This detaches the task and makes it run in the background
+
+- name: start the server processes
+  hosts: server
+  tags: test
+  tasks:
+    - name: starting server nodes
+      command: ./cloud -party="server" -sid={{ server_id }} -n_server=4 -n_clients=5 -template_path=./template/4s_10input/ -start="2024-04-24 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
+      async: 900      
+      args:
+        chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"

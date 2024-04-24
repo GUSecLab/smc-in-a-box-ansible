@@ -10,6 +10,7 @@ If anything in here is crap, blame [Micah](mailto:micah.sherr@georgetown.edu).
     - [GCP Preliminaries](#gcp-preliminaries)
   - [The Recipes -- Where the Magic Happens](#the-recipes----where-the-magic-happens)
     - [Installing (or updating) smc-in-a-box and compiling it](#installing-or-updating-smc-in-a-box-and-compiling-it)
+    - [Starting the servers, clients, and output party](#starting-the-servers-clients-and-output-party)
 
 
 
@@ -28,7 +29,7 @@ OK, now let's get started...
 
 ### Obtaining a list of GCP nodes
 
-*Note: you can skip the rest of this section and go to [The Recipes -- Where the Magic Happens](#the-recipes----where-the-magic-happens) if you have a current list of nodes.*
+*Note: you can skip the rest of this section and go to [GCP Preliminaries](#gcp-preliminaries) if you have a current list of nodes.*
 
 A critical file the list of servers, clients, and output party.  Ansible will need this.
 
@@ -107,4 +108,20 @@ To install or update smc-in-a-box (i.e., to `git clone` it and compile it), do t
 
 ```bash
 ansible-playbook -i gcp-nodes.txt -f 10 -u $GCP_USER recipes/initialize.yaml
+```
+
+Note that the [initialize.yaml](/recipes/initialize.yaml) defines which branch/tag is being used.  You can edit this accordingly.
+
+
+### Starting the servers, clients, and output party
+
+To start the servers, the output party, and the client, run the following:
+
+```bash
+ansible-playbook -i gcp-nodes.txt -f 10 -u $GCP_USER \
+    -e "exp_name=micahfun1" \
+    -e 'client_start_time="2024-04-23 15:04:05 +0000 UTC"' \
+    -e 'server_start_time="2024-04-23 15:04:05 +0000 UTC"' \
+    -e 'output_start_time="2024-04-23 15:04:05 +0000 UTC"' \
+    recipes/start.yaml
 ```
