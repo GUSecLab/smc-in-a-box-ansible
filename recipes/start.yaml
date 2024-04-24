@@ -1,47 +1,47 @@
 ---
-- hosts: all
+- name: set shared variables
+  hosts: all
   gather_facts: false
   vars:
     - exp_name: "{{ exp_name }}"
-    - exp_timeout: 900
 
-  - name: kick off tcpdump
-    hosts: all
-    gather_facts: false
-    tasks:
-      - name: start tcpdump on all hosts
-        become: yes
-        command: /usr/bin/tcpdump -s 100 -w /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap
-        async: "{{ exp_timeout }}" # in seconds
-        poll: 0 # This detaches the task and makes it run in the background
+- name: kick off tcpdump
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: start tcpdump on all hosts
+      become: yes
+      command: /usr/bin/tcpdump -s 100 -w /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap
+      async: 900 # in seconds
+      poll: 0 # This detaches the task and makes it run in the background
 
-  - name: run the server processes, and then transfer results
-    hosts: server
-    tags: test
-    tasks:
-      - name: starting server nodes
-        command: ./cloud -party="server" -sid={{ server_id }} -n_server=4 -n_clients=5 -template_path=./template/4s_10input/ -start="2024-04-24 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
-        become: yes
-        async: "{{ exp_timeout }}"
-        args:
-          chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
+- name: run the server processes, and then transfer results
+  hosts: server
+  tags: test
+  tasks:
+    - name: starting server nodes
+      command: ./cloud -party="server" -sid={{ server_id }} -n_server=4 -n_clients=5 -template_path=./template/4s_10input/ -start="2024-04-24 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
+      become: yes
+      async: 900
+      args:
+        chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
 
-      - name: create results directory
-        file:
-          path: ./results/{{ exp_name }}
-          state: directory
-        delegate_to: localhost
+    - name: create results directory
+      file:
+        path: ./results/{{ exp_name }}
+        state: directory
+      delegate_to: localhost
 
-      - name: transfer files - pcap
-        synchronize:
-          src: /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap
-          dest: ./results/{{ exp_name }}
-          mode: pull
-        delegate_to: localhost
+    - name: transfer files - pcap
+      synchronize:
+        src: /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap
+        dest: ./results/{{ exp_name }}
+        mode: pull
+      delegate_to: localhost
 
-      - name: transfer files - server_log
-        synchronize:
-          src: "{{ ansible_env.HOME }}/smc-in-a-box/cloud/server_log/"
-          dest: ./results/{{ exp_name }}
-          mode: pull
-        delegate_to: localhost
+    - name: transfer files - server_log
+      synchronize:
+        src: "{{ ansible_env.HOME }}/smc-in-a-box/cloud/server_log/"
+        dest: ./results/{{ exp_name }}
+        mode: pull
+      delegate_to: localhost
