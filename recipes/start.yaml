@@ -45,7 +45,7 @@
   hosts: client
   tasks:
     - name: starting output nodes
-      command:  ./cloud -party="client" -client_threads=1 -start_cid={{ server_id }} -n_server=4 -n_clients=5 -n_input=10 template_path=./template/4s_10input/ -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
+      command:  ./cloud -party="client" -client_threads=1 -start_cid={{ client_id }} -n_server=4 -n_clients=5 -n_input=10 template_path=./template/4s_10input/ -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
       async: 900
       poll: 0
       become: yes

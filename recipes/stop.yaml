@@ -5,8 +5,8 @@
   vars:
     - exp_name: "{{ exp_name }}"
 
-- name: stop the server processes, and then transfer results
-  hosts: server
+- name: stop the processes, and then transfer results
+  hosts: all
   tasks:
     - name: killing server nodes
       command: killall cmd
@@ -41,10 +41,33 @@
       delegate_to: localhost
       ignore_errors: yes
 
+    - name: transfer files - client_log
+      synchronize:
+        src: "{{ ansible_env.HOME }}/smc-in-a-box/cloud/client_log/"
+        dest: ../results/{{ exp_name }}
+        mode: pull
+      delegate_to: localhost
+      ignore_errors: yes
+
+    - name: transfer files - output
+      synchronize:
+        src: "{{ ansible_env.HOME }}/smc-in-a-box/cloud/op_log/"
+        dest: ../results/{{ exp_name }}
+        mode: pull
+      delegate_to: localhost
+      ignore_errors: yes
+
+    - name: transfer files - output
+      synchronize:
+        src: "{{ ansible_env.HOME }}/smc-in-a-box/cloud/result.json"
+        dest: ../results/{{ exp_name }}
+        mode: pull
+      delegate_to: localhost
+      ignore_errors: yes
+
     - name: delete files
-      command: rm -rf /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap server_config server_input server_log
+      command: rm -rf /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap server_config server_input server_log client_log client_config client_input op_log op_config op_input
       become: yes
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
       ignore_errors: yes
-
