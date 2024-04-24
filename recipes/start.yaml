@@ -13,7 +13,7 @@
     - name: start tcpdump on all hosts
       become: yes
       command: /usr/bin/tcpdump -s 100 -w /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap
-      async: {{ timeout }} # in seconds
+      async: "{{ timeout }}" # in seconds
       poll: 0 # This detaches the task and makes it run in the background
 
 - name: run the server processes, and then transfer results
@@ -23,7 +23,7 @@
     - name: starting server nodes
       command: ./cloud -party="server" -sid={{ server_id }} -n_server=4 -n_clients=5 -template_path=./template/4s_10input/ -start="2024-04-24 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
       become: yes
-      async: {{ timeout }}      
+      async: "{{ timeout }}"
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
 
