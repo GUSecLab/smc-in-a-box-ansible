@@ -1,0 +1,50 @@
+---
+- name: set shared variables
+  hosts: all
+  gather_facts: false
+  vars:
+    - exp_name: "{{ exp_name }}"
+
+- name: stop the server processes, and then transfer results
+  hosts: server
+  tasks:
+    - name: killing server nodes
+      command: killall cloud
+      become: yes
+      ignore_errors: yes
+
+    - name: stop tcpdump
+      command: killall tcpdump
+      become: yes
+      ignore_errors: yes
+
+    - name: create results directory
+      file:
+        path: ../results/{{ exp_name }}
+        state: directory
+      delegate_to: localhost
+      ignore_errors: yes
+
+    - name: transfer files - pcap
+      synchronize:
+        src: /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap
+        dest: ../results/{{ exp_name }}
+        mode: pull
+      delegate_to: localhost
+      ignore_errors: yes
+
+    - name: transfer files - server_log
+      synchronize:
+        src: "{{ ansible_env.HOME }}/smc-in-a-box/cloud/server_log/"
+        dest: ../results/{{ exp_name }}
+        mode: pull
+      delegate_to: localhost
+      ignore_errors: yes
+
+    - name: delete files
+      command: rm -rf /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap server_config server_input
+      become: yes
+      args:
+        chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
+      ignore_errors: yes
+
