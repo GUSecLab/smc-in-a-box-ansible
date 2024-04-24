@@ -23,21 +23,10 @@
       command:
         cmd: ./cloud -party="server" -sid={{ server_id }} -n_server=4 -n_clients=5 -template_path=./template/4s_10input/ -start="2024-04-24 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
         async: 900
-        poll: 0
+        poll: 15
       become: yes
-      register: command_output
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
-
-    - name: Check on the long running command every 30s, fail if timeout reached
-      command:
-        cmd: "kill -9 {{ command_output.ansible_job_id }}"
-      async_status: 
-        jid: "{{ command_output.ansible_job_id }}"
-        # Check on it every 30 seconds
-        poll: 30 
-      loop: "{{ range(0, 30)|list }}" # 900 seconds = 30 * 30
-      when: command_output.finished != 1
       ignore_errors: yes
 
     - name: create results directory
