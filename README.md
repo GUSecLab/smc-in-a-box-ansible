@@ -1,5 +1,14 @@
-# smc-in-a-box-ansible
+# Ansible Recipes for smc-in-a-box
 If anything in here is crap, blame [Micah](mailto:micah.sherr@georgetown.edu).
+
+### Table of Contents
+- [Ansible Recipes for smc-in-a-box](#ansible-recipes-for-smc-in-a-box)
+    - [Table of Contents](#table-of-contents)
+  - [Getting started](#getting-started)
+    - [Obtaining a list of GCP nodes](#obtaining-a-list-of-gcp-nodes)
+    - [Annotating that list](#annotating-that-list)
+    - [GCP Preliminaries](#gcp-preliminaries)
+
 
 
 ## Getting started
@@ -15,6 +24,8 @@ gcloud compute instances list --format='csv[no-heading](networkInterfaces[0].acc
 ```
 
 You can get to the console via the GCP web interface.
+
+### Annotating that list
 
 You'll next need to annotate that list a little bit, dividing it into sections.  For the ansible scripts here, the sections **must** bbe called `output`, `server`, and `client`.  An example file is included below:
 
@@ -47,4 +58,20 @@ client9 ansible_host=34.106.174.33 client_id=9
 Note that I manually added meaningful names on the left and added server and client IDs too.  You should probably make sure that the numbering scheme here matches the instance names from GCP.
 
 The above is also available as [gcp-nodes.txt](/gcp-nodes.txt).
+
+### GCP Preliminaries
+
+Next, you'll need to make sure that you have the [ansible.cfg](/ansible.cfg) file handy.  In a nutshell, this allows you to do ssh key forwarding.  You'll need this because the ansible scripts do a `git clone` of a private repos.
+
+Speaking of, make sure that if you have a key/passphrase for your ssh public key, you do:
+```sh
+ssh-add /path/to/key/file
+```
+You can omit `/path/to/key/file` if you use your default key with GCP.
+
+Finally, you need to type:
+```bash
+export ANSIBLE_CONFIG=/path/to/ansible.cfg
+```
+using the full path to the [ansible.cfg](/ansible.cfg) file.
 
