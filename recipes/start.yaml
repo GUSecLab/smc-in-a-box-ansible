@@ -37,9 +37,9 @@
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
 
-- name: Pause for 30 seconds 
-  pause:
-    seconds: 30
+    - name: Pause for 30 seconds 
+      ansible.builtin.pause:
+        seconds: 30
 
 - name: run the clients  
   hosts: client
