@@ -9,7 +9,7 @@
   hosts: server
   tasks:
     - name: killing server nodes
-      command: killall cloud
+      command: killall cmd
       become: yes
       ignore_errors: yes
 
