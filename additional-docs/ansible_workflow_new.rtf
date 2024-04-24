@@ -1,0 +1,148 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2708
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Bold;\f1\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab560
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b\fs26 \cf0 ansible_rules_1
+\f1\b0 \
+
+\f0\b - git pull the dev3.0 branch with tag \'93tls_mal\'94 to servers, output party, clients machines\
+\
+\
+ansible_rules_2\
+- run tcpdump \
+- run servers, output party, clients (set two start times as input to ansible scripts, one for servers and output party, one for clients)\
+- stop tcpdump and download files locally after 15min (set 15min as input to ansible scripts)\
+  - pcaps from each machine\
+  - server_log folder from each server machine under smc-in-a-box/cloud\
+  - client_log folder from each client machine under smc-in-a-box/cloud\
+  - op_log folder, result.json from output party machine under smc-in-a-box/cloud\
+\
+ansible_rules_3\
+- delete pcaps\
+- delete server_log, server_config, server_input folders from each server machine under smc-in-a-box/cloud\
+- delete client_log, client_config, client_input folders from each client machine under smc-in-a-box/cloud\
+- delete op_log, op_config, op_input folders from output party machine under smc-in-a-box/cloud\
+\
+\
+\
+\
+\
+\
+
+\f1\b0 Note: Each server\'92s 
+\f0\b -sid 
+\f1\b0 could be different but rest flags are same. Each client\'92s 
+\f0\b -start_cid
+\f1\b0  and 
+\f0\b -client_threads
+\f1\b0  could be different but rest flags are same.
+\f0\b  
+\f1\b0 \
+\
+\
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f0\b\fs32 \cf0 Group 1\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f1\b0\fs26 \cf0 \
+
+\f0\b Run a server at machine_server0
+\f1\b0 \
+   1 At smc-in-a-box/cloud, run \'94go build\'94\
+   2 At smc-in-a-box/cloud, run ./cloud -party=\'93server\'94 
+\f0\b -sid=0
+\f1\b0  -n_server=4 -n_clients=5 -template_path=\'93./template/4s_10input/\'94 -start="2024-04-23 15:04:05 +0000 UTC"\
+  -d0=3 -d1=2 -d2=5 -d3=8\
+\
+
+\f0\b Run a server at machine_server1
+\f1\b0 \
+   1 At smc-in-a-box/cloud, run \'94go build\'94\
+   2 At smc-in-a-box/cloud, run ./cloud -party=\'93server\'94 
+\f0\b -sid=1
+\f1\b0  -n_server=4 -n_clients=5 -template_path=\'93./template/4s_10input/\'94 -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8\
+\
+
+\f0\b  Run a server at machine_server2
+\f1\b0 \
+   1. At smc-in-a-box/cloud, run \'94go build\'94\
+   2. At smc-in-a-box/cloud, run ./cloud -party=\'93server\'94 
+\f0\b -sid=2 
+\f1\b0 -n_server=4 -n_clients=5 -template_path=\'93./template/4s_10input/\'94 -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8\
+\
+
+\f0\b Run a server at machine_server3
+\f1\b0 \
+   1. At smc-in-a-box/cloud, run \'94go build\'94\
+   2. At smc-in-a-box/cloud, run ./cloud -party=\'93server\'94 
+\f0\b -sid=3 
+\f1\b0 -n_server=4 -n_clients=5 -template_path=\'93./template/4s_10input/\'94 -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8\
+\
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f0\b\fs32 \cf0 Group 2\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f1\b0\fs26 \cf0 \
+
+\f0\b Run a output party at machine_outputparty
+\f1\b0 \
+   1. At smc-in-a-box/cloud, run \'94go build\'94\
+   2. At smc-in-a-box/cloud, run ./cloud -party=\'93outpatparty\'94 -template_path=\'93./template/4s_10input/\'94 -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8\
+\
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f0\b\fs32 \cf0 Group 3\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f1\b0\fs26 \cf0 \
+
+\f0\b Run a client at machine_client0
+\f1\b0 \
+ 1. At smc-in-a-box/cloud, run \'94go build\'94\
+ 2. At smc-in-a-box/cloud, run ./cloud -party=\'93client\'94 
+\f0\b -client_threads=1
+\f1\b0  
+\f0\b -start_cid=0 
+\f1\b0 -n_server=4 -n_clients=5 -n_input=10 template_path=\'93./template/4s_10input/\'94 -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8\
+\
+
+\f0\b Run a client at machine_client1
+\f1\b0 \
+ 1. At smc-in-a-box/cloud, run \'94go build\'94\
+ 2. At smc-in-a-box/cloud, run ./cloud -party=\'93client\'94 
+\f0\b -client_threads=1 -start_cid=1 
+\f1\b0 -n_server=4 -n_clients=5 -n_input=10 template_path=\'93./template/4s_10input/\'94 -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8\
+\
+\
+
+\f0\b Run a client at machine_client2
+\f1\b0 \
+ 1. At smc-in-a-box/cloud, run \'94go build\'94\
+ 2. At smc-in-a-box/cloud, run ./cloud -party=\'93client\'94 
+\f0\b -client_threads=1 -start_cid=2 
+\f1\b0 -n_server=4 -n_clients=5 -n_input=10 template_path=\'93./template/4s_10input/\'94 -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8\
+\
+
+\f0\b Run a client at machine_client3
+\f1\b0 \
+ 1. At smc-in-a-box/cloud, run \'94go build\'94\
+ 2. At smc-in-a-box/cloud, run ./cloud -party=\'93client\'94 
+\f0\b -client_threads=1 -start_cid=3 
+\f1\b0 -n_server=4 -n_clients=5 -n_input=10 template_path=\'93./template/4s_10input/\'94 -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8\
+\
+
+\f0\b Run a client at machine_client4
+\f1\b0 \
+ 1. At smc-in-a-box/cloud, run \'94go build\'94\
+ 2. At smc-in-a-box/cloud, run ./cloud -party=\'93client\'94 
+\f0\b -client_threads=1 -start_cid=4 
+\f1\b0 -n_server=4 -n_clients=5 -n_input=10 template_path=\'93./template/4s_10input/\'94 -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
+\f0\b \
+\
+}
