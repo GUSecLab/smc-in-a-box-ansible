@@ -7,7 +7,6 @@
 
 - name: stop the server processes, and then transfer results
   hosts: server
-  gather_facts: false
   tasks:
     - name: killing server nodes
       command: killall cloud
