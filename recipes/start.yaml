@@ -1,6 +1,5 @@
 ---
-- name: start smc
-  hosts: all
+- hosts: all
   gather_facts: false
   vars:
     - exp_name: "{{ exp_name }}"
