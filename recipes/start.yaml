@@ -7,7 +7,7 @@
 
 - name: kick off tcpdump
   hosts: all
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: start tcpdump on all hosts
       become: yes
