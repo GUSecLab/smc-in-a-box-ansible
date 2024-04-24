@@ -1,0 +1,24 @@
+---
+- name: clone and pull smc-in-a-box
+  hosts: all
+  become: no
+  gather_facts: yes
+  vars:
+    - branch_name: tls_mal
+
+  tasks:
+    - name: Fetch repository from GitHub
+      git:
+        repo: "git@github.com:GUSecLab/smc-in-a-box.git"
+        dest: "{{ ansible_env.HOME }}/smc-in-a-box"
+        version: "{{ branch_name }}"
+        force: true
+        accept_hostkey: yes
+      vars:
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no -A'
+
+    - name: Compile Go program
+      command: /usr/local/go/bin/go build
+      args:
+        chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
+

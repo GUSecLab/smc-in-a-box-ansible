@@ -8,10 +8,23 @@ If anything in here is crap, blame [Micah](mailto:micah.sherr@georgetown.edu).
     - [Obtaining a list of GCP nodes](#obtaining-a-list-of-gcp-nodes)
     - [Annotating that list](#annotating-that-list)
     - [GCP Preliminaries](#gcp-preliminaries)
+  - [The Recipes -- Where the Magic Happens](#the-recipes----where-the-magic-happens)
+    - [Installing (or updating) smc-in-a-box and compiling it](#installing-or-updating-smc-in-a-box-and-compiling-it)
 
 
 
 ## Getting started
+
+The ansible scripts can be run from a Mac or from Linux.  I have no idea if this works on Windows; surely the `export` functions won't work.  I'll assume you're using a Mac.
+
+Also, you might be want to run your stuff inside of a `screen`.  I'm told some of these smc-in-a-box experiments can take awhile.  :)
+
+OK, let's get started by cloning this repository via:
+```bash
+git clone git@github.com:GUSecLab/smc-in-a-box-ansible.git
+```
+
+OK, now let's get started...
 
 ### Obtaining a list of GCP nodes
 
@@ -75,3 +88,21 @@ export ANSIBLE_CONFIG=/path/to/ansible.cfg
 ```
 using the full path to the [ansible.cfg](/ansible.cfg) file.
 
+
+## The Recipes -- Where the Magic Happens
+
+The recipes are all located in the [recipes/](/recipes/) directory.
+
+To keep things simple, let's define a GCP_USER variable, which should be set to your GCP user id (which probably ends in `_georgetown_edu`).  For example,
+```bash
+export GCP_USER=ms2382_georgetown_edu
+```
+
+
+### Installing (or updating) smc-in-a-box and compiling it
+
+To install or update smc-in-a-box (i.e., to `git clone` it and compile it), do the following:
+
+```bash
+ansible-playbook -i gcp-nodes.txt -f 10 -u $GCP_USER recipes/initialize.yaml
+```
