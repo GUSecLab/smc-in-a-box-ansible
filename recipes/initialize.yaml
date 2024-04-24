@@ -31,4 +31,5 @@
         - "{{ ansible_env.HOME }}/smc-in-a-box/server/cmd"
         - "{{ ansible_env.HOME }}/smc-in-a-box/outputparty/cmd"
         - "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
-        
+
+  

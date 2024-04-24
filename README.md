@@ -118,10 +118,6 @@ Note that the [initialize.yaml](/recipes/initialize.yaml) defines which branch/t
 To start the servers, the output party, and the client, run the following:
 
 ```bash
-ansible-playbook -i gcp-nodes.txt -f 10 -u $GCP_USER \
-    -e "exp_name=micahfun1" \
-    -e 'client_start_time="2024-04-23 15:04:05 +0000 UTC"' \
-    -e 'server_start_time="2024-04-23 15:04:05 +0000 UTC"' \
-    -e 'output_start_time="2024-04-23 15:04:05 +0000 UTC"' \
-    recipes/start.yaml
+ansible-playbook -i gcp-nodes.txt -f 10 -u $GCP_USER -e "exp_name=micahfun1" recipes/start.yaml
 ```
+**BUT DON'T DO THIS UNTIL YOU EDIT THE FILE AND ADJUST THE PARAMETESR TO THE VARIOUS NODES!**
