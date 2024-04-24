@@ -11,6 +11,7 @@ If anything in here is crap, blame [Micah](mailto:micah.sherr@georgetown.edu).
   - [The Recipes -- Where the Magic Happens](#the-recipes----where-the-magic-happens)
     - [Installing (or updating) smc-in-a-box and compiling it](#installing-or-updating-smc-in-a-box-and-compiling-it)
     - [Starting the servers, clients, and output party](#starting-the-servers-clients-and-output-party)
+    - [Stop the servers, clients, and output party](#stop-the-servers-clients-and-output-party)
 
 
 
@@ -120,4 +121,14 @@ To start the servers, the output party, and the client, run the following:
 ```bash
 ansible-playbook -i gcp-nodes.txt -f 10 -u $GCP_USER -e "exp_name=micahfun1" recipes/start.yaml
 ```
-**BUT DON'T DO THIS UNTIL YOU EDIT THE FILE AND ADJUST THE PARAMETESR TO THE VARIOUS NODES!**
+**BUT DON'T DO THIS UNTIL YOU EDIT THE FILE AND ADJUST THE PARAMETERS TO THE VARIOUS NODES!**
+
+
+
+### Stop the servers, clients, and output party
+
+To stop the servers, the output party, and the client, and download the results, run the following:
+
+```bash
+ansible-playbook -i gcp-nodes.txt -f 10 -u $GCP_USER -e "exp_name=micahfun1" recipes/stop.yaml
+```
