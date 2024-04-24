@@ -7,6 +7,7 @@
 
 - name: stop the server processes, and then transfer results
   hosts: server
+  gather_facts: false
   tasks:
     - name: killing server nodes
       command: killall cloud
@@ -42,7 +43,7 @@
       ignore_errors: yes
 
     - name: delete files
-      command: rm -rf /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap server_config server_input
+      command: rm -rf /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap server_config server_input server_log
       become: yes
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
