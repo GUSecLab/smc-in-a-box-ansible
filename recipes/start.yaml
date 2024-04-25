@@ -1,9 +1,11 @@
 ---
+
 - name: set shared variables
   hosts: all
   gather_facts: false
   vars:
     - exp_name: "{{ exp_name }}"
+      
 
 - name: kick off tcpdump
   hosts: all
@@ -15,39 +17,55 @@
       async: 900 # in seconds
       poll: 0 # This detaches the task and makes it run in the background
 
+
+- hosts: all
+  tasks:
+  - set_fact: 
+      num_servers: 4
+      client_threads_per_machine: 1
+      num_clients: 10
+      num_inputs: 100
+      template_path: "./template/4s_100input/"
+      duration_0: 5
+      duration_1: 1
+      duration_2: 2
+      duration_3: 4
+      ansible_ssh_common_args: '-o ConnectTimeout=60'  # Set the timeout value in seconds
+
+
 - name: run the server processes
   hosts: server
   tasks:
     - name: starting server nodes
-      command: ./cloud -party="server" -sid={{ server_id }} -n_server=4 -n_clients=5 -template_path=./template/4s_10input/ -start="2024-04-24 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
+      command: ./cloud -party=server -sid={{ server_id }} -n_server={{ num_servers }} -n_clients={{ num_clients }} -template_path={{ template_path }} -start="2024-04-25 10:49:00 +0000 UTC" -d0={{ duration_0 }} -d1={{ duration_1 }} -d2={{ duration_2 }} -d3={{ duration_3 }}
       async: 900
       poll: 0
       become: yes
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
+        
 
 - name: run the output party 
   hosts: output
   tasks:
     - name: starting output nodes
-      command:  ./cloud -party="outputparty" -template_path=./template/4s_10input/ -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
+      command:  ./cloud -party=outputparty -n_clients={{ num_clients }} -template_path={{ template_path }} -start="2024-04-25 10:49:00 +0000 UTC" -d0={{ duration_0 }} -d3={{ duration_3 }}
       async: 900
       poll: 0
       become: yes
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
 
-    - name: Pause for 30 seconds 
-      ansible.builtin.pause:
-        seconds: 30
 
 - name: run the clients  
   hosts: client
   tasks:
-    - name: starting output nodes
-      command:  ./cloud -party="client" -client_threads=1 -start_cid={{ client_id }} -n_server=4 -n_clients=5 -n_input=10 template_path=./template/4s_10input/ -start="2024-04-23 15:04:05 +0000 UTC" -d0=3 -d1=2 -d2=5 -d3=8
+    - name: starting client nodes
+      command:  ./cloud -party=client -client_threads={{ client_threads_per_machine }} -start_cid={{ client_id }} -n_clients={{ num_clients }} -n_input={{ num_inputs }} -template_path={{ template_path }}
       async: 900
       poll: 0
       become: yes
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
+
+

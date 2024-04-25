@@ -6,6 +6,9 @@ server0 ansible_host=34.23.63.163 server_id=0
 server1 ansible_host=35.197.49.235 server_id=1
 server2 ansible_host=34.22.167.188 server_id=2
 server3 ansible_host=34.86.188.98 server_id=3
+server4 ansible_host=34.42.86.58 server_id=4
+server5 ansible_host=35.198.133.63 server_id=5
+server6 ansible_host=34.168.114.41 server_id=6
 
 [client]
 client0 ansible_host=34.107.123.45 client_id=0

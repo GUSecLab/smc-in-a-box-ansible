@@ -8,6 +8,8 @@
 - name: stop the processes, and then transfer results
   hosts: all
   tasks:
+    - set_fact: 
+        ansible_ssh_common_args: '-o ConnectTimeout=60'  # Set the timeout value in seconds
     - name: killing server nodes
       command: killall cmd
       become: yes
@@ -66,8 +68,12 @@
       ignore_errors: yes
 
     - name: delete files
-      command: rm -rf /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap server_config server_input server_log client_log client_config client_input op_log op_config op_input
+      command: rm -rf /tmp/{{ exp_name }}.{{ ansible_facts['hostname'] }}.pcap server_config server_input server_log client_log client_config client_input op_log op_config op_input result.json
       become: yes
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box/cloud"
       ignore_errors: yes
+
+    - name: delete database files
+      shell: rm -rf {{ ansible_env.HOME }}/smc-in-a-box/cloud/*.db {{ ansible_env.HOME }}/smc-in-a-box/cloud/*.db-wal {{ ansible_env.HOME }}/smc-in-a-box/cloud/*.db-shm
+      become: yes
