@@ -7,7 +7,27 @@
     - branch_name: tls_mal
 
   tasks:
+
+    - name: Ensure git is installed
+      apt: 
+        name: git
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: download Go
+      command: wget https://go.dev/dl/go1.22.2.linux-amd64.tar.gz
+      args:
+        chdir: /tmp
+
+    - name: install Go
+      shell:  rm -rf /usr/local/go && tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
+      args:
+        chdir: /tmp
+      become: yes
+
     - name: Fetch repository from GitHub
+      tags: smcinstall
       git:
         repo: "git@github.com:GUSecLab/smc-in-a-box.git"
         dest: "{{ ansible_env.HOME }}/smc-in-a-box"
@@ -18,11 +38,13 @@
         ansible_ssh_common_args: '-o StrictHostKeyChecking=no -A'
 
     - name: Run 'go mod tidy' for smc-in-a-box
+      tags: smcinstall
       command: /usr/local/go/bin/go mod tidy
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box"
 
     - name: Compile Go program
+      tags: smcinstall
       command: /usr/local/go/bin/go build
       args:
         chdir: "{{ item }}"
