@@ -11,13 +11,13 @@ server5 ansible_host=35.198.133.63 server_id=5
 server6 ansible_host=34.168.114.41 server_id=6
 
 [client]
-client0 ansible_host=34.107.123.45 client_id=0
-client1 ansible_host=35.230.165.136 client_id=1
-client2 ansible_host=34.17.42.120 client_id=2
-client3 ansible_host=34.133.134.193 client_id=3
-client4 ansible_host=35.235.72.113 client_id=4
-client5 ansible_host=34.138.201.163 client_id=5
-client6 ansible_host=34.16.165.206 client_id=6
-client7 ansible_host=34.155.189.54 client_id=7
-client8 ansible_host=35.235.86.12 client_id=8
-client9 ansible_host=34.106.174.33 client_id=9
+client0 ansible_host=34.141.4.161 client_id=0
+client1 ansible_host=34.150.199.104 client_id=1
+client2 ansible_host=34.17.37.137 client_id=2
+client3 ansible_host=34.31.120.189 client_id=3
+client4 ansible_host=35.236.65.1 client_id=4
+client5 ansible_host=104.196.23.225 client_id=5
+client6 ansible_host=34.16.154.12 client_id=6
+client7 ansible_host=34.155.20.85 client_id=7
+client8 ansible_host=35.235.72.113 client_id=8
+client9 ansible_host=34.106.127.161 client_id=9
