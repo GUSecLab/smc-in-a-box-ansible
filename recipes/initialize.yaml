@@ -27,6 +27,7 @@
       become: yes
 
     - name: Fetch repository from GitHub
+      tags: smcinstall
       git:
         repo: "git@github.com:GUSecLab/smc-in-a-box.git"
         dest: "{{ ansible_env.HOME }}/smc-in-a-box"
@@ -37,11 +38,13 @@
         ansible_ssh_common_args: '-o StrictHostKeyChecking=no -A'
 
     - name: Run 'go mod tidy' for smc-in-a-box
+      tags: smcinstall
       command: /usr/local/go/bin/go mod tidy
       args:
         chdir: "{{ ansible_env.HOME }}/smc-in-a-box"
 
     - name: Compile Go program
+      tags: smcinstall
       command: /usr/local/go/bin/go build
       args:
         chdir: "{{ item }}"
