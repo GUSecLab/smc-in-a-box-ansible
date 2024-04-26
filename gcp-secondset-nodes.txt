@@ -1,7 +1,8 @@
 [server]
-server0-b.privatestats.org
-server1-b.privatestats.org
-server2-b.privatestats.org
+server0b ansible_host=server0-b.privatestats.org server_id=0
+server1b ansible_host=server1-b.privatestats.org server_id=1
+server2b ansible_host=server2-b.privatestats.org server_id=2
+server3b ansible_host=server3-b.privatestats.org server_id=3
 
 [output]
-outputparty-b.privatestats.org
+output0 ansible_host=34.125.135.95
