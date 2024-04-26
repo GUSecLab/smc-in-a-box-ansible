@@ -1,0 +1,7 @@
+[server]
+server0-b.privatestats.org
+server1-b.privatestats.org
+server2-b.privatestats.org
+
+[output]
+outputparty-b.privatestats.org
