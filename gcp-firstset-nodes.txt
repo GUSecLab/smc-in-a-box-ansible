@@ -1,0 +1,16 @@
+[output]
+output0 ansible_host=outputparty.privatestats.org
+
+[server]
+server0 ansible_host=server0.privatestats.org server_id=0
+server1 ansible_host=server1.privatestats.org server_id=1
+server2 ansible_host=server2.privatestats.org server_id=2
+server3 ansible_host=server3.privatestats.org server_id=3
+
+[client]
+client0 ansible_host=server4.privatestats.org client_id=0
+client84 ansible_host=server5.privatestats.org client_id=84
+client168 ansible_host=server0-b.privatestats.org client_id=168
+client252 ansible_host=server1-b.privatestats.org client_id=252
+client336 ansible_host=server2-b.privatestats.org client_id=336
+client420 ansible_host=outputparty-b.privatestats.org client_id=420

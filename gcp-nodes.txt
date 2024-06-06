@@ -1,11 +1,13 @@
 [output]
-output0 ansible_host=34.125.18.133
+output0 ansible_host=outputparty-b.privatestats.org
 
 [server]
-server0 ansible_host=34.23.63.163 server_id=0
-server1 ansible_host=35.197.49.235 server_id=1
-server2 ansible_host=34.22.167.188 server_id=2
-server3 ansible_host=34.86.188.98 server_id=3
+server5 ansible_host=server5.privatestats.org server_id=5
+server6 ansible_host=server6.privatestats.org server_id=6
+server0b ansible_host=server0-b.privatestats.org server_id=0
+server1b ansible_host=server1-b.privatestats.org server_id=1
+server2b ansible_host=server2-b.privatestats.org server_id=2
+server3b ansible_host=server3-b.privatestats.org server_id=3
 
 [client]
 client0 ansible_host=34.141.4.161 client_id=0
@@ -18,3 +20,4 @@ client6 ansible_host=34.16.154.12 client_id=6
 client7 ansible_host=34.155.20.85 client_id=7
 client8 ansible_host=35.235.72.113 client_id=8
 client9 ansible_host=34.106.127.161 client_id=9
+

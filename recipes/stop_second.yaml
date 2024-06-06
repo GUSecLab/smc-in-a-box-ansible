@@ -42,7 +42,6 @@
         mode: pull
       delegate_to: localhost
       ignore_errors: yes
-      
 
     - name: transfer files - client_log
       synchronize:
@@ -51,7 +50,6 @@
         mode: pull
       delegate_to: localhost
       ignore_errors: yes
-      when: false
 
     - name: transfer files - output
       synchronize:

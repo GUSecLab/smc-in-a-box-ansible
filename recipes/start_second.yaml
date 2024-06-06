@@ -19,11 +19,6 @@
         login_user: "{{ mysql_user }}"
         login_password: "{{ mysql_password }}"
         query: "ALTER INSTANCE DISABLE INNODB REDO_LOG;"
-    - name: Set max_connections global variable in MySQL
-      mysql_query:
-        login_user: "{{ mysql_user }}"
-        login_password: "{{ mysql_password }}"
-        query: "SET GLOBAL max_connections = 1000"
     - name: Create MySQL database
       mysql_db:
         name: "{{ mysql_db_name }}"
@@ -51,16 +46,16 @@
 - hosts: all
   tasks:
   - set_fact: 
-      num_servers: 4
-      client_threads_per_machine: 84
-      num_clients: 504
-      num_clients_mal: 9
-      num_inputs: 1
-      template_path: "./template/4s_1input/"
-      duration_0: 2
-      duration_1: 1
-      duration_2: 2
-      duration_3: 4
+      num_servers: 7
+      client_threads_per_machine: 1
+      num_clients: 10
+      num_clients_mal: 0
+      num_inputs: 1000000
+      template_path: "./template/7s_1000000input/"
+      duration_0: 5
+      duration_1: 2
+      duration_2: 4
+      duration_3: 7
       ansible_ssh_common_args: '-o ConnectTimeout=60'  # Set the timeout value in seconds
 
 
@@ -68,7 +63,7 @@
   hosts: server
   tasks:
     - name: starting server nodes
-      command: ./cloud -party=server -sid={{ server_id }} -n_servers={{ num_servers }} -n_clients={{ num_clients }} -n_clients_mal={{ num_clients_mal }} -template_path={{ template_path }} -start="2024-06-01 19:41:00 +0000 UTC" -d0={{ duration_0 }} -d1={{ duration_1 }} -d2={{ duration_2 }} -d3={{ duration_3 }}
+      command: ./cloud -party=server -sid={{ server_id }} -n_servers={{ num_servers }} -n_clients={{ num_clients }} -n_clients_mal={{ num_clients_mal }} -template_path={{ template_path }} -start="2024-05-31 18:35:00 +0000 UTC" -d0={{ duration_0 }} -d1={{ duration_1 }} -d2={{ duration_2 }} -d3={{ duration_3 }}
       async: 900
       poll: 0
       become: yes
@@ -80,7 +75,7 @@
   hosts: output
   tasks:
     - name: starting output nodes
-      command:  ./cloud -party=outputparty -n_clients={{ num_clients }} -template_path={{ template_path }} -start="2024-06-01 19:41:00 +0000 UTC" -d0={{ duration_0 }} -d3={{ duration_3 }}
+      command:  ./cloud -party=outputparty -n_clients={{ num_clients }} -template_path={{ template_path }} -start="2024-05-31 18:35:00 +0000 UTC" -d0={{ duration_0 }} -d3={{ duration_3 }}
       async: 900
       poll: 0
       become: yes
